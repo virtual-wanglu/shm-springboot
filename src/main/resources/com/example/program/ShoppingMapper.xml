@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.program.mapper.ShoppingMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.program.entity.Shopping">
+            <id property="shoppingId" column="shoppingId" jdbcType="INTEGER"/>
+            <result property="shoppingDesc" column="shoppingDesc" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="VARCHAR"/>
+            <result property="tag" column="tag" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="imgUrl1" column="imgUrl1" jdbcType="VARCHAR"/>
+            <result property="imgUrl2" column="imgUrl2" jdbcType="VARCHAR"/>
+            <result property="imgUrl3" column="imgUrl3" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        shoppingId,shoppingDesc,price,
+        tag,title,imgUrl1,
+        imgUrl2,imgUrl3
+    </sql>
+</mapper>
