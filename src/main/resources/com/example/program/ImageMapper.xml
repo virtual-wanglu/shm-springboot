@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.program.mapper.ImageMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.program.entity.Image">
+            <id property="imageId" column="imageId" jdbcType="INTEGER"/>
+            <result property="imageUrl" column="imageUrl" jdbcType="VARCHAR"/>
+            <result property="roomId" column="roomId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        imageId,imageUrl,roomId
+    </sql>
+</mapper>
