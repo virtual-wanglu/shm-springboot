@@ -1,7 +1,9 @@
 package com.example.program.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.program.entity.User;
+import com.example.program.mapper.UserMapper;
 import com.example.program.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     String AppId = "wx5cd6afe12ade2727";  //公众平台自己的appId
     String AppSecret = "eadfe65b718c370e00e708b2849fd144";  //AppSecret
@@ -36,8 +41,8 @@ public class UserController {
         if(userService.getById(openid) == null){
             User user=new User();
             user.setOpen_id(openid);
-            user.setNick_name(jsonParam.getString("nick_name"));
-            user.setAvatar_url(jsonParam.getString("avatar_url"));
+            user.setNickName(jsonParam.getString("nick_name"));
+            user.setAvatarUrl(jsonParam.getString("avatar_url"));
             user.setProperty(0.0);
             System.out.println(user);
             boolean save = userService.save(user);
@@ -45,6 +50,28 @@ public class UserController {
             System.out.println("exit");
         }
         return openid;
+    }
+
+    @PostMapping("/changeInfo")
+    public User change(@RequestBody JSONObject jsonObject){
+        String openid = jsonObject.getString("openid");
+        String nickName=jsonObject.getString("nickName");
+        String avatarUrl=jsonObject.getString("avatarUrl");
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("open_id",openid);
+        User user = userMapper.selectOne(queryWrapper);
+        user.setNickName(nickName);
+        user.setAvatarUrl(avatarUrl);
+        userMapper.update(user,queryWrapper);
+        return user;
+    }
+
+    @PostMapping("/getInfo")
+    public User getInfo(@RequestBody JSONObject jsonObject){
+        String openid = jsonObject.getString("openid");
+        User user = userService.getById(openid);
+        System.out.println(user);
+        return user;
     }
 
     @PostMapping("/getProperty")
