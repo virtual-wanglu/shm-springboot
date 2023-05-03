@@ -27,7 +27,7 @@ public class UserController {
     String AppSecret = "eadfe65b718c370e00e708b2849fd144";  //AppSecret
 
     @PostMapping("/login")
-    public String wxLogin(@RequestBody JSONObject jsonParam) {
+    public User wxLogin(@RequestBody JSONObject jsonParam) {
         String code = jsonParam.getString("code");
         System.out.println(code);
         String url = "https://api.weixin.qq.com/sns/jscode2session?" +
@@ -38,8 +38,8 @@ public class UserController {
         String jsonData = restTemplate.getForObject(url, String.class);
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         String openid = jsonObject.getString("openid");
-        if(userService.getById(openid) == null){
-            User user=new User();
+        User user = userMapper.selectById(openid);
+        if(user == null){
             user.setOpen_id(openid);
             user.setNickName(jsonParam.getString("nick_name"));
             user.setAvatarUrl(jsonParam.getString("avatar_url"));
@@ -47,9 +47,11 @@ public class UserController {
             System.out.println(user);
             boolean save = userService.save(user);
         }else {
-            System.out.println("exit");
+            System.out.println("exist");
+            user.setOpen_id(openid);
+            System.out.println(user);
         }
-        return openid;
+        return user;
     }
 
     @PostMapping("/changeInfo")
@@ -60,6 +62,7 @@ public class UserController {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("open_id",openid);
         User user = userMapper.selectOne(queryWrapper);
+        user.setOpen_id(openid);
         user.setNickName(nickName);
         user.setAvatarUrl(avatarUrl);
         userMapper.update(user,queryWrapper);
