@@ -40,6 +40,7 @@ public class UserController {
         String openid = jsonObject.getString("openid");
         User user = userMapper.selectById(openid);
         if(user == null){
+            user =new User();
             user.setOpen_id(openid);
             user.setNickName(jsonParam.getString("nick_name"));
             user.setAvatarUrl(jsonParam.getString("avatar_url"));
